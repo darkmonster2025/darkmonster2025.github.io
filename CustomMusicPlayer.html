@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Custom Music PLayer</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu',sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f9f9f9;
+    user-select: none;
+}
+.music{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.title{
+    font-weight: 400;
+    font-size: 2em;
+    color: rgb(28, 107, 197);
+    display: inline-flex;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.player{
+    position: relative;
+    width: 500px;
+    min-height: 100px;
+    background: #fbfbfb;
+    border: 2px solid #fff;
+    border-radius: 80px;
+    padding: 20px 30px;
+    box-shadow: -10px -10px 15px #fff,
+    10px 10px 15px rgba(0, 0, 0, 0.1),
+    inset -5px -5px 15px #fff,
+    inset 5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+.btns{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.btns span{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgb(60, 148, 151);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #00fa15f5;
+    cursor: pointer;
+    box-shadow: inset 0 -5px 5px rgba(0, 0, 0, 0.1),
+                      0 5px 10px rgba(0, 0, 0, 0.1),
+                      0 10px 15px rgba(0, 0, 0, 0.1);
+}
+.btns span:active,
+.btns span.active{
+    color: #00fa15f5;
+    box-shadow: inset 0 -7px 5px rgba(0, 0, 0, 0.025),
+                inset 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+.btns span.playPause{
+    width: 100px;
+    height: 100px;
+}
+.btns span ion-icon{
+    font-size: 2em;
+}
+.btns span.playPause ion-icon{
+    font-size: 3em;
+}
+</style>
+</head>
+<body>
+<div class="music">
+    <h2 class="title">Music Name</h2>
+    <div class="player">
+        <audio src=""></audio>
+        <div class="btns">
+            <span class="prev">
+                <ion-icon name="play-back-outline"></ion-icon>
+            </span>
+            <span class="playPause">
+                <ion-icon name="play-outline"></ion-icon>
+            </span>
+            <span class="next">
+                <ion-icon name="play-forward-outline"></ion-icon>
+            </span>
+        </div>
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script>
+    const title = document.querySelector('.title');
+    const prev = document.querySelector('.prev');
+    const playPause = document.querySelector('.playPause');
+    const next = document.querySelector('.next');
+    const audio = document.querySelector('audio');
+    
+    const songlist = [
+        {
+            path: "Butrint_Imeri_feat_Zubi_anatu_-_sugar_remix_73625256.mp3",
+            songName: "Sugar Remix",
+        },
+        {
+            path: "Andro_-_Inoplanetyanin_62633962.mp3",
+            songName: "Andro Inoplanetyanen",
+        },
+        {
+            path: "Future_Drake_-_Life_Is_Good_67944275.mp3",
+            songName: "Life Is Good",
+        },
+        {
+            path: "TPL_BM_OTP_-_London_View_Remix_ft_Mini_x_Sava_x_Marin_x_Rambizz_Music_Video_Pressplay_73296056.mp3",
+            songName: "London View",
+        },
+        {
+            path: "Coolio_-_Gangstas_Paradise_47978745.mp3",
+            songName: "Gangstas Paradise",
+        },
+        {
+            path: "bts - black swan (tik tok version).mp3",
+            songName: "Black Swan",
+        },
+        
+    ];
+    
+    let song_Playing = false;
+
+    //play song
+    function playSong(){
+        song_Playing = true;
+        audio.play();
+        playPause.classList.add('active');
+        //change icon
+        playPause.innerHTML = '<ion-icon name="pause-outline"></ion-icon>';
+    }
+    //pause song
+    function pauseSong(){
+        song_Playing = false;
+        audio.pause();
+        playPause.classList.remove('active');
+         //change icon
+         playPause.innerHTML = '<ion-icon name="play-outline"></ion-icon>';
+    }
+
+    //play or pause song on click
+    playPause.addEventListener('click', () => (song_Playing ? pauseSong() : playSong()));
+
+    //load song
+    function loadSong(songlist){
+        title.textContent = songlist.songName;
+        audio.src = songlist.path; 
+    }
+
+    //current song
+    let i = 0;
+
+    //on load - select first song from song list
+    loadSong(songlist[i]);
+    
+    //previous song
+    function predSong(){
+       i--;
+       if(i < 0){
+           i = songlist.length - 1;
+       } 
+       loadSong(songlist[i]);
+       playSong();
+    }
+    prev.addEventListener('click', predSong);
+
+
+    function nextSong(){
+       i++;
+       if(i > songlist.length - 1){
+           i = 0;
+       } 
+       loadSong(songlist[i]);
+       playSong();
+    }
+    next.addEventListener('click', nextSong);
+</script>
+</body>    
+</html>
